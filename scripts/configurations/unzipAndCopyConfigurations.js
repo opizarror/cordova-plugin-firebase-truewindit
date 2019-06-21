@@ -31,13 +31,15 @@ module.exports = function(context) {
   var wwwPath = utils.getResourcesFolderPath(context, platform, platformConfig);
   var sourceFolderPath;
 
-  if (cordovaAbove7) {
-    sourceFolderPath = path.join(context.opts.projectRoot, "www", constants.folderNamePrefix + appId);
+ if (cordovaAbove7) {
+    wwwPath = path.join(context.opts.projectRoot, "www");
   } else {
-    sourceFolderPath = path.join(wwwPath, constants.folderNamePrefix + appId);
+    wwwPath = utils.getResourcesFolderPath(context, platform, platformConfig);
   }
   
-  var googleServicesZipFile = utils.getZipFile(sourceFolderPath, constants.googleServices);
+  var sourceZipName = constants.folderNamePrefix + appId + "." + constants.googleServices; 
+  var googleServicesZipFile = utils.getZipFile(wwwPath, sourceZipName);
+  
   if (!googleServicesZipFile) {
     utils.handleError("No zip file found containing google services configuration file", defer);
   }
